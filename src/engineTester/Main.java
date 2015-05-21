@@ -114,11 +114,25 @@ public class Main {
     	}
 
     	while (levelManager.hasNext()) {
-    		if (levelManager.getNextEntity() == LevelManager.LEVEL_SQUARE) {
-    			Entity e = new Square((float) Math.random() * MONITOR_WIDTH, (float) Math.random() * MONITOR_HEIGHT, 25);
-    			e.setxVelocity((float) Math.random() * 2);
-    			e.setyVelocity((float) Math.random() * 2);
-    			entitiesList.add(e);
+    		switch (levelManager.getNextEntity()) {
+	    		case LevelManager.LEVEL_SQUARE:
+	    			Entity e;
+	    			boolean isSuitable;
+	    			do {
+	    				isSuitable = true;
+		    			e = new Square((float) Math.random() * MONITOR_WIDTH, (float) Math.random() * MONITOR_HEIGHT, 25);
+		    			e.setxVelocity((float) Math.random() * 200);
+		    			e.setyVelocity((float) Math.random() * 200);
+		    			for (int i = 0; i < entitiesList.size(); i++) {
+		    				if (e.isCollidingWith(entitiesList.get(i)))
+		    					isSuitable = false;
+		    			}
+	    			} while(!isSuitable);
+		    		entitiesList.add(e);
+	    			break;
+	    		case LevelManager.SWAP_BACKGROUND:
+	    			swapBackgroundColors();
+	    			break;
     		}
     	}
     	
@@ -143,6 +157,33 @@ public class Main {
     		}
     		
     		e.update();
+    	}
+    	
+    	for (int i = 0; i < entitiesList.size(); i++) {
+			Entity outerObject = entitiesList.get(i);
+    		for (int j = i + 1; j < entitiesList.size(); j++) {
+    			Entity innerObject = entitiesList.get(j);
+    			if (outerObject.isCollidingWith(innerObject)) {
+    				float x, y;
+    				x = outerObject.getXPos();
+    				y = outerObject.getYPos();
+    				
+    				outerObject.setxPos(x - outerObject.getxVelocity() * TimeManager.getDelta());
+    				outerObject.setyPos(y - outerObject.getyVelocity() * TimeManager.getDelta());
+
+    				x = innerObject.getXPos();
+    				y = innerObject.getYPos();
+
+    				innerObject.setxPos(x - innerObject.getxVelocity() * TimeManager.getDelta());
+    				innerObject.setyPos(y - innerObject.getyVelocity() * TimeManager.getDelta());
+    				
+    				outerObject.reverseVector();
+    				innerObject.reverseVector();
+    			}
+    		}
+    		if (outerObject.isCollidingWith(player)) {
+    			swapBackgroundColors();
+    		}
     	}
     }
     

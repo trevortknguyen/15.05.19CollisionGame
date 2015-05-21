@@ -24,6 +24,6 @@ public class TimeManager {
 	}
 	
 	public static float getDelta() {
-		return delta;
+		return delta / 1000.0f;
 	}
 }

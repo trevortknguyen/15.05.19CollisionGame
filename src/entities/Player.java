@@ -5,7 +5,7 @@ import input.Input;
 
 public class Player extends Square {
 
-	float speedFactor = 1.0f;
+	float speedFactor = 75.0f;
 	
 	public Player(float x, float y) {
 		super(x, y, 5);

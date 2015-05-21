@@ -7,7 +7,7 @@ public abstract class Entity implements Drawable {
 	private float xVelocity, yVelocity;
 	
 	public Entity() {
-		
+	
 	}
 	
 	public Entity(float xPos, float yPos) {
@@ -19,6 +19,8 @@ public abstract class Entity implements Drawable {
 		xPos += xVelocity * TimeManager.getDelta();
 		yPos += yVelocity * TimeManager.getDelta();
 	}
+	
+	public abstract boolean isCollidingWith(Entity other);
 	
 	public float getXPos() {
 		return xPos;
@@ -58,5 +60,10 @@ public abstract class Entity implements Drawable {
 	
 	public void reflectyVelocity() {
 		yVelocity = -yVelocity;
+	}
+	
+	public void reverseVector() {
+		reflectxVelocity();
+		reflectyVelocity();
 	}
 }

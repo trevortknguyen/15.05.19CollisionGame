@@ -7,7 +7,8 @@ import engineTester.TimeManager;
 public class LevelManager {
 	private Stack<Integer> levelStack;
 	
-	public static int LEVEL_SQUARE = 0x1;
+	public static final int LEVEL_SQUARE = 0x1;
+	public static final int SWAP_BACKGROUND = 0x2;
 	
 	private long lastTime;
 	private int count = 1;
@@ -16,7 +17,7 @@ public class LevelManager {
 	public LevelManager() {
 		levelStack = new Stack<>();
 		
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 25; i++)
 			levelStack.push(LEVEL_SQUARE);
 		
 		lastTime = TimeManager.getTime();
@@ -26,7 +27,8 @@ public class LevelManager {
 		if (TimeManager.getTime() - lastTime > count * 1000) {
 			for (int i = 0; i < 15; i++)
 			levelStack.push(LEVEL_SQUARE);
-
+			levelStack.push(SWAP_BACKGROUND);
+			
 			lastTime = TimeManager.getTime();
 			count++;
 		}
