@@ -17,7 +17,7 @@ public class LevelManager {
 	public LevelManager() {
 		levelStack = new Stack<>();
 		
-		for (int i = 0; i < 25; i++)
+		for (int i = 0; i < 50; i++)
 			levelStack.push(LEVEL_SQUARE);
 		
 		lastTime = TimeManager.getTime();
@@ -25,7 +25,7 @@ public class LevelManager {
 	
 	public void update() {
 		if (TimeManager.getTime() - lastTime > count * 1000) {
-			for (int i = 0; i < 15; i++)
+			for (int i = 0; i < 5; i++)
 			levelStack.push(LEVEL_SQUARE);
 			levelStack.push(SWAP_BACKGROUND);
 			

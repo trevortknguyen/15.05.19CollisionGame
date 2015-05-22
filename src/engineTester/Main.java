@@ -6,6 +6,8 @@ import static org.lwjgl.glfw.GLFWvidmode.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
 import input.Input;
+import input.MouseButtonInput;
+import input.MousePosition;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -14,10 +16,13 @@ import java.util.List;
 import levelEngine.LevelManager;
 
 import org.lwjgl.Sys;
+import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.opengl.GLContext;
 
+import entities.Cursor;
 import entities.Entity;
 import entities.Player;
 import entities.Square;
@@ -25,8 +30,12 @@ import entities.Square;
 public class Main {
     private GLFWErrorCallback errorCallback;
     private GLFWKeyCallback   keyCallback;
+    private GLFWCursorPosCallback cursorPosCallback;
+    private GLFWMouseButtonCallback mouseButtonCallback;
  
     public static int MONITOR_WIDTH, MONITOR_HEIGHT;
+    
+    private Entity cursor = new Cursor();
     
     private long window;
     private boolean isFullscreen;
@@ -38,6 +47,8 @@ public class Main {
  
     public Main() {
     	this.keyCallback = new Input();
+    	this.cursorPosCallback = new MousePosition();
+    	this.mouseButtonCallback = new MouseButtonInput();
     	this.errorCallback = errorCallbackPrint(System.err);
     	
     	glfwSetErrorCallback(errorCallback);
@@ -159,6 +170,13 @@ public class Main {
     		e.update();
     	}
     	
+    	if (MouseButtonInput.lastAction == GLFW_PRESS) {
+	    	cursor.setxPos(MousePosition.getX());
+	    	cursor.setyPos(MONITOR_HEIGHT - MousePosition.getY());
+	    	System.out.println("ding: " + MousePosition.getX() + ", " + MousePosition.getY());
+	    	MouseButtonInput.resetMouse();
+    	}
+    	
     	for (int i = 0; i < entitiesList.size(); i++) {
 			Entity outerObject = entitiesList.get(i);
     		for (int j = i + 1; j < entitiesList.size(); j++) {
@@ -184,6 +202,11 @@ public class Main {
     		if (outerObject.isCollidingWith(player)) {
     			swapBackgroundColors();
     		}
+    		if (cursor.isCollidingWith(outerObject)) {
+    			System.out.println("comparing");
+    			entitiesList.remove(i);
+    			i--;
+    		}
     	}
     }
     
@@ -205,6 +228,8 @@ public class Main {
             throw new RuntimeException("Failed to create the GLFW window");
  
         glfwSetKeyCallback(window, keyCallback);
+        glfwSetCursorPosCallback(window, cursorPosCallback);
+        glfwSetMouseButtonCallback(window, mouseButtonCallback);
  
         glfwMakeContextCurrent(window);
         glfwSwapInterval(1);
