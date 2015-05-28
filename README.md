@@ -1,7 +1,7 @@
 # 15.05.19CollisionGame
 Final Project
 
-Ryan Howell's Contributions:
+Ryan Howell's Contributions: Click Pencil
 
 
 Thai Nguyen's Contributions:
