@@ -1,7 +1,7 @@
 # 15.05.19CollisionGame
 Final Project
 
-Ryan Howell's Contributions: Click Pencil
+Ryan Howell's Contributions: Click Pencil My main contributions came from audio. I was in charge of all things audio related. I picked out music and created and implemented our audio class.
 
 
 Thai Nguyen's Contributions:
