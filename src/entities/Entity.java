@@ -3,7 +3,8 @@ package entities;
 import engineTester.TimeManager;
 
 public abstract class Entity implements Drawable {
-	private float xPos, yPos;
+	protected float xPos;
+	protected float yPos;
 	private float xVelocity, yVelocity;
 	
 	public Entity() {

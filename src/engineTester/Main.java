@@ -22,6 +22,7 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.opengl.GLContext;
 
+import audio.Audio;
 import entities.Cursor;
 import entities.Entity;
 import entities.Player;
@@ -36,6 +37,8 @@ public class Main {
     public static int MONITOR_WIDTH, MONITOR_HEIGHT;
     
     private Entity cursor = new Cursor();
+    
+    private Audio a;
     
     private long window;
     private boolean isFullscreen;
@@ -59,14 +62,14 @@ public class Main {
         ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         MONITOR_WIDTH = width(vidmode);
         MONITOR_HEIGHT = height(vidmode);
-        
+                
         entitiesList = new ArrayList<>();
         levelManager = new LevelManager();
         player = new Player(MONITOR_WIDTH / 2, MONITOR_HEIGHT / 2);
     }
     
     public void run() {
-        System.out.println("Hello LWJGL " + Sys.getVersion() + "!");
+    	System.out.println("Hello LWJGL " + Sys.getVersion() + "!");
         try {
             init();
             loop();
@@ -77,7 +80,7 @@ public class Main {
             errorCallback.release();
         }
     }
- 
+
     private void init() {
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
@@ -112,6 +115,7 @@ public class Main {
     	glfwPollEvents();
     	TimeManager.newFrame();
     	levelManager.update();
+    	a = new Audio();
     	
     	if (Input.keys[GLFW_KEY_ESCAPE])
     		glfwSetWindowShouldClose(window, GL_TRUE);
@@ -153,18 +157,22 @@ public class Main {
     		if (e.getXPos() < 0) {
     			e.setxPos(1);
     			e.reflectxVelocity();
+    			a.playboing();
     		}
     		if (e.getXPos() > MONITOR_WIDTH) {
     			e.setxPos(MONITOR_WIDTH - 1);
     			e.reflectxVelocity();
+    			a.playboing();
     		}
     		if (e.getYPos() < 0) {
     			e.setyPos(1);
     			e.reflectyVelocity();
+    			a.playboing();
     		}
     		if (e.getYPos() > MONITOR_HEIGHT) {
     			e.setyPos(MONITOR_HEIGHT - 1);
     			e.reflectyVelocity();
+    			a.playboing();
     		}
     		
     		e.update();
@@ -197,6 +205,8 @@ public class Main {
     				
     				outerObject.reverseVector();
     				innerObject.reverseVector();
+    				
+    				a.playboing();
     			}
     		}
     		if (outerObject.isCollidingWith(player)) {
@@ -206,6 +216,7 @@ public class Main {
     			System.out.println("comparing");
     			entitiesList.remove(i);
     			i--;
+    			a.playclick();
     		}
     	}
     }
