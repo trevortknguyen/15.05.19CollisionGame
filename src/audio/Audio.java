@@ -1,34 +1,34 @@
 package audio;
 
-import java.awt.Component;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
-import javax.swing.JFileChooser;
-
-import sun.audio.*;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
 
 public class Audio {
 	
-	AudioStream boing;
+	AudioStream boing; //creates AudioStream Objects for all sound effects
 	AudioStream click;
 	AudioStream background;
 	
 	public Audio(){
 	try{
-		String st = "C:\\Users\\Ryan\\workspace\\Project\\click.wav";
-		InputStream in = new FileInputStream(st);
-		click = new AudioStream(in);
-		st = "C:\\Users\\Ryan\\workspace\\Project\\boing.wav";
-		in = new FileInputStream(st);
+		String st = "C:\\Users\\Thai Nguyen\\Documents\\LWJGL\\15.05.12 CollisionGame\\res\\click.wav"; //creates strings for file locations
+		InputStream in = new FileInputStream(new File(st));                                             //creates an input stream for the data
+		click = new AudioStream(in);                                                                    //initialize the AudioStream object
+		st = "C:\\Users\\Thai Nguyen\\Documents\\LWJGL\\15.05.12 CollisionGame\\res\\boing.wav";
+		in = new FileInputStream(new File(st));
 		boing = new AudioStream(in);
-		st = "C:\\Users\\Ryan\\workspace\\Project\\background.wav";
-		in = new FileInputStream(st);
+		st = "C:\\Users\\Thai Nguyen\\Documents\\LWJGL\\15.05.12 CollisionGame\\res\\background.wav";
+		in = new FileInputStream(new File(st));
 		background = new AudioStream(in);
 	}
 	catch(Exception e){}
 	}
 	
-	public void playboing(){
+	public void playboing(){           //allows the audio clip to be called from different classes
 		AudioPlayer.player.start(boing);
 	}
 	

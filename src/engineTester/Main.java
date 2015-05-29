@@ -27,7 +27,13 @@ import entities.Cursor;
 import entities.Entity;
 import entities.Player;
 import entities.Square;
- 
+
+/**
+ * Main class that is going to be initializing the windows.
+ * Only one instance should exist for each game instance.
+ * @author Thai Nguyen
+ *
+ */
 public class Main {
     private GLFWErrorCallback errorCallback;
     private GLFWKeyCallback   keyCallback;
@@ -48,6 +54,11 @@ public class Main {
     
     Player player;
  
+    /**
+     * Default constructor is the only constructor.
+     * This will set all of the GLFW callbacks to
+     * the custom classes.
+     */
     public Main() {
     	this.keyCallback = new Input();
     	this.cursorPosCallback = new MousePosition();
@@ -68,6 +79,9 @@ public class Main {
         player = new Player(MONITOR_WIDTH / 2, MONITOR_HEIGHT / 2);
     }
     
+    /**
+     * Initializes the window set up.
+     */
     public void run() {
     	System.out.println("Hello LWJGL " + Sys.getVersion() + "!");
         try {
@@ -81,6 +95,10 @@ public class Main {
         }
     }
 
+    /**
+     * Sets up required values for the window
+     * and creates it.
+     */
     private void init() {
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
@@ -91,6 +109,10 @@ public class Main {
         isFullscreen = true;
     }
  
+    /**
+     * Allows OpenGL calls to be made
+     * using immediate mode.
+     */
     private void initImmediateMode() {
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
@@ -98,6 +120,10 @@ public class Main {
 		glMatrixMode(GL_MODELVIEW);
     }
     
+    /**
+     * Starts up the main game loop and ends when
+     * the window is signaled to close.
+     */
     private void loop() {
         GLContext.createFromCurrent();
         initImmediateMode();
@@ -111,6 +137,10 @@ public class Main {
         }
     }
     
+    /**
+     * High-level update method and calls other update
+     * methods in other classes.
+     */
     private void update() {
     	glfwPollEvents();
     	TimeManager.newFrame();
@@ -221,6 +251,10 @@ public class Main {
     	}
     }
     
+    /**
+     * Calls all the entities' individual
+     * render methods.
+     */
     private void render() {
     	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -233,7 +267,11 @@ public class Main {
     }
     
     
-    
+    /**
+     * Gives a window the necessary parameters
+     * for display and assigns callbacks.
+     * @param window
+     */
     private void initWindow(long window) {
         if ( window == NULL )
             throw new RuntimeException("Failed to create the GLFW window");
@@ -247,6 +285,10 @@ public class Main {
         glfwShowWindow(window);
     }
     
+    /**
+     * Allows switching screen modes by
+     * creating new instances of different windows.
+     */
     private void toggleFullscreen() {
     	if (isFullscreen) {
     		long tempWindow = glfwCreateWindow(MONITOR_WIDTH-500, MONITOR_HEIGHT-500, "Windowed", NULL, NULL);
@@ -265,10 +307,18 @@ public class Main {
     	initImmediateMode();
     }
     
+    /**
+     * Miscellaneous method to create spontaneous colors.
+     * May cause epileptic seizures.
+     */
     private void swapBackgroundColors() {
         glClearColor((float) Math.random(), (float) Math.random(), (float) Math.random(), 1.0f);
     }
     
+    /**
+     * Entry point into the program.
+     * @param args
+     */
     public static void main(String[] args) {
         new Main().run();
     }

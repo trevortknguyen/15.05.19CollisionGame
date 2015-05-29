@@ -13,9 +13,13 @@ public class LevelManager {
 	private long lastTime;
 	private int count = 1;
 	
-	
+	/**
+	 * Creates a LevelManager object using a default constructor,
+	 * however there should only be one LevelManager object per
+	 * instance of a game.
+	 */
 	public LevelManager() {
-		levelStack = new Stack<>();
+		levelStack = new Stack<>();  
 		
 		for (int i = 0; i < 50; i++)
 			levelStack.push(LEVEL_SQUARE);
@@ -23,7 +27,12 @@ public class LevelManager {
 		lastTime = TimeManager.getTime();
 	}
 	
-	public void update() {
+	/**
+	 * Called in the main class. After a certain amount of time,
+	 * the LevelManager will push an order to add more
+	 * objects to the screen.
+	 */
+	public void update() {                                     //calls methods to add in more cube objects
 		if (TimeManager.getTime() - lastTime > count * 1000) {
 			for (int i = 0; i < 5; i++)
 			levelStack.push(LEVEL_SQUARE);
@@ -33,11 +42,17 @@ public class LevelManager {
 			count++;
 		}
 	}
-		
+	
+	/**
+	 * 
+	 * @return The next order from the stack.
+	 */
 	public int getNextEntity() {
 		return levelStack.pop();
 	}
-	
+	/**
+	 * returns true or false depending on if there is another object to be added
+	 */
 	public boolean hasNext() {
 		return !levelStack.isEmpty();
 	}
