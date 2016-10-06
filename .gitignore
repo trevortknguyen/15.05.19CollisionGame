@@ -1,1 +1,9 @@
+# Compiled Files #
+##################
 /bin/
+
+# Eclipse Project #
+###################
+.settings
+.classpath
+.project
